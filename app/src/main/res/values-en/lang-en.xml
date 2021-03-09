@@ -1,0 +1,52 @@
+<resources>
+
+    <string name="app_name" translatable="false">Heritage words</string>
+    <string name="share_the_question_with_friends" translatable="false">  Ask a friend </string>
+    <string name="share_question_text" translatable="false">share </string>
+    <string name="share_title_hint" translatable="false">add title</string>
+    <string name="the_right_answer_is" translatable="false">Answer is</string>
+    <string name="back_text" translatable="false"> back </string>
+    <string name="permission_title" translatable="false">Clarification </string>
+    <string name="permission_explanation" translatable="false">The application needs to gain write permission on the external storage to store the image in preparation for its sharing by other applications</string>
+    <string name="permission_denied" translatable="false">The operation was not executed because the necessary permissions were not granted </string>
+    <string name="titleDailog" translatable="false">  change language </string>
+
+    <string-array name="answers">
+        <item> the headband </item>
+        <item>The undercoat </item>
+        <item>Sadu </item>
+        <item>henna </item>
+        <item>Dallah </item>
+        <item>Slippers </item>
+        <item>Dagger</item>
+        <item>Tiger </item>
+        <item> The lantern </item>
+        <item>Lantern </item>
+        <item>Cowl </item>
+        <item>Turban </item>
+        <item>Dishdasha</item>
+    </string-array>
+
+    <string-array name="answer_description">
+        <item>It is placed over the hat / ghutra to fix it </item>
+        <item>Lined with wool, they are worn in winter to protect against the cold </item>
+        <item>One of the traditional Bedouin weaving types </item>
+        <item>It is used to dye hair and beards, and it is also used to beautify the hands of women </item>
+        <item>The bowl used to serve coffee by the Arabs </item>
+        <item>Made of leather, it is worn on the feet, it was ancient by the Arabs </item>
+        <item>A small white weapon that is placed on the waist </item>
+        <item>Small pillow to lean on </item>
+        <item>The name of the tool that was used for lighting in the past </item>
+        <item>A tool used for lighting and decorations </item>
+        <item>Red hat was famous in the Levant, Egypt and Morocco </item>
+        <item>Overhead cap </item>
+        <item>Arab dress is widely worn in the Gulf countries </item>
+    </string-array>
+    <string-array name="language_item">
+        <item> arabic </item>
+        <item> english  </item>
+
+    </string-array>
+
+
+</resources>
