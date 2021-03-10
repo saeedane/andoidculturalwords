@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,18 +24,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.ByteArrayOutputStream;
+
 public class shareActivity extends AppCompatActivity {
     private static final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 123;
-    private EditText  edit_text_share_title;
+    private EditText edit_text_share_title;
     private ImageView image_view_question;
     int image_share_question;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         edit_text_share_title = findViewById(R.id.edit_text_share_title);
         image_view_question = findViewById(R.id.image_view_question);
-        image_share_question = getIntent().getIntExtra("image_share_question",0);
+        image_share_question = getIntent().getIntExtra("image_share_question", 0);
         image_view_question.setImageResource(image_share_question);
 
 
@@ -44,19 +48,26 @@ public class shareActivity extends AppCompatActivity {
      * يجب عليك كتابة الكود الذي يقوم بمشاركة الصورة في هذه الدالة
      */
     private void shareImage() {
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("image/jpeg");
-        Uri uri = Uri.parse("android.resource://com.barmej.culturalwords/drawable/" +image_share_question);
-        sharingIntent.putExtra(Intent.EXTRA_TEXT,edit_text_share_title.getText().toString() );
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        startActivity(Intent.createChooser(sharingIntent, "Share image using"));
-
+        try {
+            Bitmap b = BitmapFactory.decodeResource(getResources(), image_share_question);
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setType("image/jpeg");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(getContentResolver(), b, "Title", null);
+            Uri imageUri = Uri.parse(path);
+            share.putExtra(Intent.EXTRA_TEXT, edit_text_share_title.getText().toString());
+            share.putExtra(Intent.EXTRA_STREAM, imageUri);
+            startActivity(Intent.createChooser(share, "Select"));
+        } catch (Exception e) {
+            e.getMessage();
+        }
 
 
     }
 
     /**
-     *  هذه الدالة تقوم بطلب صلاحية الكتابة على ال external storage حتى يمكن حفظ ملف الصورة
+     * هذه الدالة تقوم بطلب صلاحية الكتابة على ال external storage حتى يمكن حفظ ملف الصورة
      * <p>
      * وفي حال الحصول على الصلاحية تقوم باستدعاء دالة shareImage لمشاركة الصورة
      **/
@@ -124,7 +135,6 @@ public class shareActivity extends AppCompatActivity {
 
     public void image_share_question(View view) {
         checkPermissionAndShare();
-
         shareImage();
     }
 }

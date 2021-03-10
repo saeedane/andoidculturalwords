@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
-                        LocaleHelper.setLocale(MainActivity.this, language);
+                        LocaleHelper.setLocale(getApplicationContext(), language);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
