@@ -1,4 +1,4 @@
-package com.barmej.culturalwords;
+package com.barmej.GIT;
 
 import android.Manifest;
 import android.content.DialogInterface;
