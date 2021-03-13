@@ -33,13 +33,12 @@ public class MainActivity extends AppCompatActivity {
         showImage();
 
 
-
     }
 
     private void showImage() {
 
         SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
-        int save_current_index = preferences.getInt("save_current_index",0);
+        int save_current_index = preferences.getInt("save_current_index", 0);
         Drawable drawable = getResources().getDrawable(heritage_Image[save_current_index]);
         image_view_question.setImageDrawable(drawable);
 
@@ -47,12 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void image_share_question(View view) {
         SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
-        int save_current_index = preferences.getInt("save_current_index",0);
+        int save_current_index = preferences.getInt("save_current_index", 0);
         Intent intent = new Intent(getApplicationContext(), shareActivity.class);
-        intent.putExtra("image_share_question",heritage_Image[save_current_index]);
+        intent.putExtra("image_share_question", heritage_Image[save_current_index]);
         startActivity(intent);
 
     }
+
     public void button_change_question(View view) {
         random = new Random();
         currentIndex = random.nextInt(heritage_Image.length);
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int wish) {
                         String language = "ar";
 
-                        switch (wish){
+                        switch (wish) {
                             case 0:
                                 language = "ar";
                                 break;
@@ -93,21 +93,18 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
 
 
-
                     }
                 });
-       dialog.create();
-       dialog.show();
-
-
+        dialog.create();
+        dialog.show();
 
 
     }
 
-    public void saveCurrentIndex(){
+    public void saveCurrentIndex() {
         SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("save_current_index",currentIndex);
+        editor.putInt("save_current_index", currentIndex);
         editor.apply();
 
     }
