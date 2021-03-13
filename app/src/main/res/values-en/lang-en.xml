@@ -10,6 +10,7 @@
     <string name="permission_explanation" translatable="false">The application needs to gain write permission on the external storage to store the image in preparation for its sharing by other applications</string>
     <string name="permission_denied" translatable="false">The operation was not executed because the necessary permissions were not granted </string>
     <string name="titleDailog" translatable="false">  change language </string>
+    <string name="titleShare" translatable="false"> Choose a way to share the image  </string>
 
     <string-array name="answers">
         <item> the headband </item>

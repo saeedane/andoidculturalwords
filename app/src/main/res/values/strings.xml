@@ -10,6 +10,8 @@
     <string name="permission_explanation" translatable="false">يحتاج التطبيق للحصول على صلاحية الكتابة على وحدة التخزين الخارجية لتخزين الصورة تمهيدا لاتاحة مشاركتها من خلال التطبيقات الأخرى</string>
     <string name="permission_denied" translatable="false">لم يتم تنفيذ العملية بسبب عدم منح الصلاحيات اللازمة لتنفيذها</string>
     <string name="titleDailog" translatable="false">تغير لغة</string>
+    <string name="titleShare" translatable="false"> اختر وسيلة لمشاركة الصورة </string>
+
 
     <string-array name="answers">
         <item>العقال</item>

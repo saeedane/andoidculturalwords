@@ -62,7 +62,8 @@ public class shareActivity extends AppCompatActivity {
             Uri imageUri = Uri.parse(path);
             share.putExtra(Intent.EXTRA_TEXT, save_text);
             share.putExtra(Intent.EXTRA_STREAM, imageUri);
-            startActivity(Intent.createChooser(share, "Select"));
+            String titleShare = getResources().getString(R.string.titleShare);
+            startActivity(Intent.createChooser(share,titleShare));
             save_text();
 
         } catch (Exception e) {
