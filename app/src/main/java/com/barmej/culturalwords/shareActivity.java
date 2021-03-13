@@ -148,7 +148,6 @@ public class shareActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         String edit_text = edit_text_share_title.getText().toString();
-        Toast.makeText(getApplicationContext(), "text : " + edit_text, Toast.LENGTH_SHORT).show();
         editor.putString("save_text_image", edit_text);
         editor.apply();
 
