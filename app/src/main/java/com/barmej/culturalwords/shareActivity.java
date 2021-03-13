@@ -1,8 +1,10 @@
-package com.barmej.culturalwords;
+package com.barmej.git init;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,7 +39,9 @@ public class shareActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
+
         edit_text_share_title = findViewById(R.id.edit_text_share_title);
+        save_text();
         image_view_question = findViewById(R.id.image_view_question);
         image_share_question = getIntent().getIntExtra("image_share_question", 0);
         image_view_question.setImageResource(image_share_question);
@@ -49,6 +54,8 @@ public class shareActivity extends AppCompatActivity {
      */
     private void shareImage() {
         try {
+            SharedPreferences preferences = getSharedPreferences(Constant.KeyPref,Context.MODE_PRIVATE);
+            String save_text = preferences.getString("save_text_image","");
             Bitmap b = BitmapFactory.decodeResource(getResources(), image_share_question);
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("image/jpeg");
@@ -56,7 +63,7 @@ public class shareActivity extends AppCompatActivity {
             b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
             String path = MediaStore.Images.Media.insertImage(getContentResolver(), b, "Title", null);
             Uri imageUri = Uri.parse(path);
-            share.putExtra(Intent.EXTRA_TEXT, edit_text_share_title.getText().toString());
+            share.putExtra(Intent.EXTRA_TEXT, save_text);
             share.putExtra(Intent.EXTRA_STREAM, imageUri);
             startActivity(Intent.createChooser(share, "Select"));
         } catch (Exception e) {
@@ -136,5 +143,18 @@ public class shareActivity extends AppCompatActivity {
     public void image_share_question(View view) {
         checkPermissionAndShare();
         shareImage();
+        save_text();
+    }
+
+    public void save_text(){
+        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String edit_text = edit_text_share_title.getText().toString();
+        editor.putString("save_text_image",edit_text);
+        editor.apply();
+
+
     }
 }
+
+

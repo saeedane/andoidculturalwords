@@ -1,7 +1,9 @@
 package com.barmej.culturalwords;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 
 import android.os.Bundle;
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.icon_8, R.drawable.icon_9, R.drawable.icon_10, R.drawable.icon_11,
             R.drawable.icon_12, R.drawable.icon_13};
     private ImageView image_view_question;
-    private int currentIndex;
+    private int currentIndex = 0;
     Random random;
 
     @Override
@@ -29,22 +31,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         image_view_question = findViewById(R.id.image_view_question);
         showImage();
+
+
+
     }
 
     private void showImage() {
-        Drawable drawable = getResources().getDrawable(heritage_Image[currentIndex]);
+
+        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
+        int save_current_index = preferences.getInt("save_current_index",0);
+        Drawable drawable = getResources().getDrawable(heritage_Image[save_current_index]);
         image_view_question.setImageDrawable(drawable);
+
     }
 
     public void image_share_question(View view) {
+        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
+        int save_current_index = preferences.getInt("save_current_index",0);
         Intent intent = new Intent(getApplicationContext(), shareActivity.class);
-        intent.putExtra("image_share_question",heritage_Image[currentIndex]);
+        intent.putExtra("image_share_question",heritage_Image[save_current_index]);
         startActivity(intent);
-    }
 
+    }
     public void button_change_question(View view) {
         random = new Random();
         currentIndex = random.nextInt(heritage_Image.length);
+        saveCurrentIndex();
         showImage();
     }
 
@@ -89,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    public void saveCurrentIndex(){
+        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("save_current_index",currentIndex);
+        editor.apply();
 
     }
 }
