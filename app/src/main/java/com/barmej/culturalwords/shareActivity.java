@@ -8,20 +8,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -41,10 +35,12 @@ public class shareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_share);
 
         edit_text_share_title = findViewById(R.id.edit_text_share_title);
-        save_text();
         image_view_question = findViewById(R.id.image_view_question);
         image_share_question = getIntent().getIntExtra("image_share_question", 0);
         image_view_question.setImageResource(image_share_question);
+        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
+        String save_text = preferences.getString("save_text_image", "");
+        edit_text_share_title.setText(save_text);
 
 
     }
@@ -54,8 +50,8 @@ public class shareActivity extends AppCompatActivity {
      */
     private void shareImage() {
         try {
-            SharedPreferences preferences = getSharedPreferences(Constant.KeyPref,Context.MODE_PRIVATE);
-            String save_text = preferences.getString("save_text_image","");
+            SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
+            String save_text = preferences.getString("save_text_image", "");
             Bitmap b = BitmapFactory.decodeResource(getResources(), image_share_question);
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("image/jpeg");
@@ -66,6 +62,8 @@ public class shareActivity extends AppCompatActivity {
             share.putExtra(Intent.EXTRA_TEXT, save_text);
             share.putExtra(Intent.EXTRA_STREAM, imageUri);
             startActivity(Intent.createChooser(share, "Select"));
+            save_text();
+
         } catch (Exception e) {
             e.getMessage();
         }
@@ -146,11 +144,12 @@ public class shareActivity extends AppCompatActivity {
         save_text();
     }
 
-    public void save_text(){
+    public void save_text() {
         SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         String edit_text = edit_text_share_title.getText().toString();
-        editor.putString("save_text_image",edit_text);
+        Toast.makeText(getApplicationContext(), "text : " + edit_text, Toast.LENGTH_SHORT).show();
+        editor.putString("save_text_image", edit_text);
         editor.apply();
 
 
