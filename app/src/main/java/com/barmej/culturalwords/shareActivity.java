@@ -1,4 +1,4 @@
-package com.barmej.git init;
+package com.barmej.culturalwords;
 
 import android.Manifest;
 import android.content.Context;
