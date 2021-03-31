@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private int currentIndex = 0;
     private Random random;
     private String language = "ar";
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         image_view_question = findViewById(R.id.image_view_question);
         showImage();
-
-
-
 
 
     }
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonChangeLanguage(View view) {
-         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
                 .setIcon(R.drawable.ic_language_orange)
                 .setTitle(R.string.titleDailog)
                 .setItems(R.array.language_item, new DialogInterface.OnClickListener() {
@@ -110,17 +108,17 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-
         dialog.create();
         dialog.show();
 
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void loadLanguage() {
 
         SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
-        String save_language = preferences.getString(Constant.keyLangSave,"");
+        String save_language = preferences.getString(Constant.keyLangSave, "");
         changeLanguage(save_language);
 
 
@@ -142,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
     }
+
     private void saveLanguage(String language) {
         SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -150,12 +149,6 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
 
     }
-
-
-
-
-
-
 
 
 }

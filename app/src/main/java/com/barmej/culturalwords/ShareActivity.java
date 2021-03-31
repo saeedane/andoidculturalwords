@@ -54,18 +54,16 @@ public class ShareActivity extends AppCompatActivity {
     public void shareImage() {
 
 
-            SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
-            String save_text = preferences.getString(Constant.save_Text_Image, "");
-            Bitmap inImage = BitmapFactory.decodeResource(getApplicationContext().getResources(),image_share_question);
-            Intent share = new Intent(Intent.ACTION_SEND);
-            Uri path = getImageUri(inImage,Bitmap.CompressFormat.JPEG,100);
-            share.setType("image/*");
-            share.putExtra(Intent.EXTRA_TEXT, save_text);
-            share.putExtra(Intent.EXTRA_STREAM, path);
-            String titleShare = getResources().getString(R.string.titleShare);
-            startActivity(Intent.createChooser(share, titleShare));
-
-
+        SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
+        String save_text = preferences.getString(Constant.save_Text_Image, "");
+        Bitmap inImage = BitmapFactory.decodeResource(getApplicationContext().getResources(), image_share_question);
+        Intent share = new Intent(Intent.ACTION_SEND);
+        Uri path = getImageUri(inImage, Bitmap.CompressFormat.JPEG, 100);
+        share.setType("image/*");
+        share.putExtra(Intent.EXTRA_TEXT, save_text);
+        share.putExtra(Intent.EXTRA_STREAM, path);
+        String titleShare = getResources().getString(R.string.titleShare);
+        startActivity(Intent.createChooser(share, titleShare));
 
 
     }
