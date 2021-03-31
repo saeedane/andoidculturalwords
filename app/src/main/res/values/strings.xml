@@ -1,10 +1,10 @@
 <resources>
 
-    <string name="app_name" translatable="false">كلمات تراثية</string>
+    <string name="app_name" translatable="false"> لعبة الكلمات التراثية  </string>
     <string name="share_the_question_with_friends" translatable="false">اسأل صديق</string>
     <string name="share_question_text" translatable="false">شارك</string>
     <string name="share_title_hint" translatable="false">أضف عنوان</string>
-    <string name="the_right_answer_is" translatable="false">الإجابة هي</string>
+    <string name="the_right_answer_is" translatable="false">  عدد مرات </string>
     <string name="back_text" translatable="false">رجوع</string>
     <string name="permission_title" translatable="false">توضيح</string>
     <string name="permission_explanation" translatable="false">يحتاج التطبيق للحصول على صلاحية الكتابة على وحدة التخزين الخارجية لتخزين الصورة تمهيدا لاتاحة مشاركتها من خلال التطبيقات الأخرى</string>

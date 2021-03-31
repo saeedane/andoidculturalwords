@@ -14,7 +14,7 @@ public class AnswerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer);
-        currentIndexAnswer = getIntent().getIntExtra("currentIndexAnswer", 0);
+        currentIndexAnswer = getIntent().getIntExtra(Constant.keyIndexAnswer, 0);
         String[] answers = getResources().getStringArray(R.array.answers);
         String[] answer_description = getResources().getStringArray(R.array.answer_description);
         TextView text_view_answer = findViewById(R.id.text_view_answer);

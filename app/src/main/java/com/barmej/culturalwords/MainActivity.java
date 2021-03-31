@@ -1,20 +1,32 @@
 package com.barmej.culturalwords;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import java.util.Locale;
 import java.util.Random;
+
+import static android.view.View.LAYOUT_DIRECTION_LTR;
 
 public class MainActivity extends AppCompatActivity {
     int[] heritage_Image = {R.drawable.icon_1, R.drawable.icon_2, R.drawable.icon_3,
@@ -23,37 +35,41 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.icon_12, R.drawable.icon_13};
     private ImageView image_view_question;
     private int currentIndex = 0;
-    Random random;
-
-    @Override
+    private Random random;
+    private String language = "ar";
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadLanguage();
         setContentView(R.layout.activity_main);
         image_view_question = findViewById(R.id.image_view_question);
         showImage();
 
 
+
+
+
     }
 
-    private void showImage() {
 
-        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
-        int save_current_index = preferences.getInt("save_current_index", 0);
+    private void showImage() {
+        SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
+        int save_current_index = preferences.getInt(Constant.keyIndex, 0);
         Drawable drawable = getResources().getDrawable(heritage_Image[save_current_index]);
         image_view_question.setImageDrawable(drawable);
 
     }
 
-    public void image_share_question(View view) {
-        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
-        int save_current_index = preferences.getInt("save_current_index", 0);
-        Intent intent = new Intent(getApplicationContext(), shareActivity.class);
-        intent.putExtra("image_share_question", heritage_Image[save_current_index]);
+    public void imageShareQuestion(View view) {
+        SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
+        int save_current_index = preferences.getInt(Constant.keyIndex, 0);
+        Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+        intent.putExtra(Constant.image_Share_Question, heritage_Image[save_current_index]);
         startActivity(intent);
 
     }
 
-    public void button_change_question(View view) {
+    public void buttonChangeQuestion(View view) {
         random = new Random();
         currentIndex = random.nextInt(heritage_Image.length);
         saveCurrentIndex();
@@ -61,51 +77,85 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void button_open_answer(View view) {
+    public void buttonOpenAnswer(View view) {
         Intent open_answer = new Intent(MainActivity.this, AnswerActivity.class);
-        open_answer.putExtra("currentIndexAnswer", currentIndex);
+        open_answer.putExtra(Constant.keyIndexAnswer, currentIndex);
         startActivity(open_answer);
     }
 
-    public void button_change_language(View view) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
-                .setIcon(R.drawable.ic_help_white_24dp)
+    public void buttonChangeLanguage(View view) {
+         AlertDialog.Builder dialog = new AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_language_orange)
                 .setTitle(R.string.titleDailog)
                 .setItems(R.array.language_item, new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     @Override
                     public void onClick(DialogInterface dialogInterface, int wish) {
-                        String language = "ar";
-
                         switch (wish) {
                             case 0:
                                 language = "ar";
+
                                 break;
                             case 1:
                                 language = "en";
+
                                 break;
 
                         }
-
-                        LocaleHelper.setLocale(getApplicationContext(), language);
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        changeLanguage(language);
+                        recreate();
 
 
                     }
                 });
+
+
+
         dialog.create();
         dialog.show();
 
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void loadLanguage() {
 
-    public void saveCurrentIndex() {
-        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
+        String save_language = preferences.getString(Constant.keyLangSave,"");
+        changeLanguage(save_language);
+
+
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void changeLanguage(String language) {
+        saveLanguage(language);
+        LocaleHelper.setLocale(getApplicationContext(), language);
+
+    }
+
+
+    private void saveCurrentIndex() {
+        SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("save_current_index", currentIndex);
+        editor.putInt(Constant.keyIndex, currentIndex);
         editor.apply();
 
     }
+    private void saveLanguage(String language) {
+        SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constant.keyLangSave, language);
+        editor.apply();
+        editor.commit();
+
+    }
+
+
+
+
+
+
+
+
 }

@@ -5,7 +5,7 @@
     <color name="colorAccent">@color/brownLight</color>
 
     <color name="brownLight">#ecded3</color>
-    <color name="brown">#894216</color>
-    <color name="brownDark">#602e0f</color>
+    <color name="brown">#009688</color>
+    <color name="brownDark">#017C71</color>
     <color name="transWhite">#5fffffff</color>
 </resources>

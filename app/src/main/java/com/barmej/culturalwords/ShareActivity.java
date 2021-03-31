@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,14 +22,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.BitmapCompat;
 
 import java.io.ByteArrayOutputStream;
 
-public class shareActivity extends AppCompatActivity {
+public class ShareActivity extends AppCompatActivity {
     private static final int PERMISSIONS_WRITE_EXTERNAL_STORAGE = 123;
     private EditText edit_text_share_title;
     private ImageView image_view_question;
-    int image_share_question;
+    private int image_share_question;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +39,10 @@ public class shareActivity extends AppCompatActivity {
 
         edit_text_share_title = findViewById(R.id.edit_text_share_title);
         image_view_question = findViewById(R.id.image_view_question);
-        image_share_question = getIntent().getIntExtra("image_share_question", 0);
+        image_share_question = getIntent().getIntExtra(Constant.image_Share_Question, 0);
         image_view_question.setImageResource(image_share_question);
-        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
-        String save_text = preferences.getString("save_text_image", "");
+        SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
+        String save_text = preferences.getString(Constant.save_Text_Image, "");
         edit_text_share_title.setText(save_text);
 
 
@@ -49,26 +51,21 @@ public class shareActivity extends AppCompatActivity {
     /**
      * يجب عليك كتابة الكود الذي يقوم بمشاركة الصورة في هذه الدالة
      */
-    private void shareImage() {
-        try {
-            SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
-            String save_text = preferences.getString("save_text_image", "");
-            Bitmap b = BitmapFactory.decodeResource(getResources(), image_share_question);
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setType("image/jpeg");
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            String path = MediaStore.Images.Media.insertImage(getContentResolver(), b, "Title", null);
-            Uri imageUri = Uri.parse(path);
-            share.putExtra(Intent.EXTRA_TEXT, save_text);
-            share.putExtra(Intent.EXTRA_STREAM, imageUri);
-            String titleShare = getResources().getString(R.string.titleShare);
-            startActivity(Intent.createChooser(share,titleShare));
-            save_text();
+    public void shareImage() {
 
-        } catch (Exception e) {
-            e.getMessage();
-        }
+
+            SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
+            String save_text = preferences.getString(Constant.save_Text_Image, "");
+            Bitmap inImage = BitmapFactory.decodeResource(getApplicationContext().getResources(),image_share_question);
+            Intent share = new Intent(Intent.ACTION_SEND);
+            Uri path = getImageUri(inImage,Bitmap.CompressFormat.JPEG,100);
+            share.setType("image/*");
+            share.putExtra(Intent.EXTRA_TEXT, save_text);
+            share.putExtra(Intent.EXTRA_STREAM, path);
+            String titleShare = getResources().getString(R.string.titleShare);
+            startActivity(Intent.createChooser(share, titleShare));
+
+
 
 
     }
@@ -95,7 +92,7 @@ public class shareActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // requestPermissions عند الضغط على زر منح نقوم بطلب الصلاحية عن طريق الدالة
-                                ActivityCompat.requestPermissions(shareActivity.this,
+                                ActivityCompat.requestPermissions(ShareActivity.this,
                                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                         PERMISSIONS_WRITE_EXTERNAL_STORAGE);
                             }
@@ -133,7 +130,7 @@ public class shareActivity extends AppCompatActivity {
                 shareImage();
             } else {
                 // لم يتم منح الصلاحية من المستخدم لذلك لن نقوم بمشاركة الصورة، طبعا يمكننا تنبيه المستخدم بأنه لن يتم مشاركة الصورة لسبب عدم منح الصلاحية للتطبيق
-                Toast.makeText(shareActivity.this, R.string.permission_explanation, Toast.LENGTH_SHORT)
+                Toast.makeText(ShareActivity.this, R.string.permission_explanation, Toast.LENGTH_SHORT)
                         .show();
             }
         }
@@ -142,18 +139,27 @@ public class shareActivity extends AppCompatActivity {
 
     public void image_share_question(View view) {
         checkPermissionAndShare();
-        shareImage();
         save_text();
+
+
     }
 
-    public void save_text() {
-        SharedPreferences preferences = getSharedPreferences(Constant.KeyPref, Context.MODE_PRIVATE);
+    private void save_text() {
+        SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         String edit_text = edit_text_share_title.getText().toString();
-        editor.putString("save_text_image", edit_text);
+        editor.putString(Constant.save_Text_Image, edit_text);
         editor.apply();
 
 
+    }
+
+    private Uri getImageUri(Bitmap src, Bitmap.CompressFormat format, int quality) {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        src.compress(format, quality, os);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), src, "title", null);
+
+        return Uri.parse(path);
     }
 }
 
