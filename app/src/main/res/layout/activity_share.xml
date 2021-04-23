@@ -64,7 +64,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/button_brown"
         android:text="@string/share_question_text"
-        android:onClick="image_share_question"
+        android:onClick="imageShareQuestion"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void changeLanguage(String language) {
         saveLanguage(language);
-        LocaleHelper.setLocale(getApplicationContext(), language);
+        LocaleHelper.setLocale(MainActivity.this, language);
 
     }
 
@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(Constant.keyLangSave, language);
         editor.apply();
-        editor.commit();
 
     }
 

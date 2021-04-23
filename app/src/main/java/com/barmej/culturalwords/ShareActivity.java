@@ -135,14 +135,14 @@ public class ShareActivity extends AppCompatActivity {
     }
 
 
-    public void image_share_question(View view) {
+    public void imageShareQuestion(View view) {
         checkPermissionAndShare();
-        save_text();
+        saveTextImage();
 
 
     }
 
-    private void save_text() {
+    private void saveTextImage() {
         SharedPreferences preferences = getSharedPreferences(Constant.keyPref, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         String edit_text = edit_text_share_title.getText().toString();
